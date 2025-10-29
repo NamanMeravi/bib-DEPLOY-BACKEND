@@ -1,8 +1,10 @@
 import app from "../app.js";
 import { dbConnect } from "../db/db.js";
+import serverless from "serverless-http";
 
-// Connect DB once per cold start
+// ✅ Connect to MongoDB on cold start
 await dbConnect();
 
-// Export default handler for Vercel
+// ✅ Export Express app wrapped for Vercel
+export const handler = serverless(app);
 export default app;

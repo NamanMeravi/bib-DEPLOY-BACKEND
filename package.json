@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "main": "server.js",
   "type": "module",
-"scripts": {
-  "dev": "nodemon server.js",
-  "start": "node server.js",
-  "vercel-start": "node server.js"
-}
-,
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node api/index.js",
+    "vercel-start": "node api/index.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -30,7 +29,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.17.0",
     "multer": "^2.0.2",
-    "nodemailer": "^7.0.5"
+    "nodemailer": "^7.0.5",
+    "serverless-http": "^4.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

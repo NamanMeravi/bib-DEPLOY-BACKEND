@@ -3,11 +3,10 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-let isConnected = false; // 🔹 Keep track of connection state
+let isConnected = false;
 
 export const dbConnect = async () => {
   if (isConnected) {
-    // 🔹 If already connected, skip reconnecting
     console.log("🟢 Using existing database connection");
     return;
   }
@@ -17,7 +16,6 @@ export const dbConnect = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-
     isConnected = db.connections[0].readyState;
     console.log("✅ Connected to MongoDB");
   } catch (error) {
