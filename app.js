@@ -13,34 +13,38 @@ import {
 
 const app = express();
 
-// Connect to the database
+// Connect to DB
 dbConnect();
 
-// Cron-job
-setInterval(
-  cronJobForAutoDeletionFromRecycleBinParmanently,
-  CRON_JOB_AUTO_DELETE_TRASH_TIME
-);
+// ✅ Run cron job only in non-production (local/dev)
+if (process.env.NODE_ENV !== "production") {
+  console.log("Cron job enabled (development mode)");
+  setInterval(
+    cronJobForAutoDeletionFromRecycleBinParmanently,
+    CRON_JOB_AUTO_DELETE_TRASH_TIME
+  );
+}
 
-// Middlewares
-// app.use(cors()); // Cross-Origin Resource Sharing
+// ✅ CORS setup
 const allowedOrigin = [
   "http://localhost:5173",
   "https://project-bin.netlify.app",
 ];
+
 app.use(
   cors({
     origin: allowedOrigin,
-    credentials: true, // allow cookies/auth headers
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-app.use(express.json()); //Parses JSON request bodies into req.body
-app.use(express.urlencoded({ extended: true })); //Parses URL-encoded form data (e.g., from HTML forms) into req.body.
-app.use(cookieparser()); //Parses cookies from the request and makes them available in req.cookies
 
-// Routes
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieparser());
+
+// ✅ Routes
 app.use("/users", userRouter);
 app.use("/email", emailRouter);
 app.use("/asset", assetRouter);
@@ -48,4 +52,5 @@ app.use("/asset", assetRouter);
 app.get("/", rateLimiter(MINUTE, 5), (req, res) => {
   res.send("Backend Deployed successfully");
 });
+
 export default app;
